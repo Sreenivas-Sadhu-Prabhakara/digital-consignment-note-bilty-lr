@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'; connect-src 'self'">
+  <title>The consignment note copy set, laid out for printing · Open MSME</title>
+  <meta name="description" content="The consignment note laid out as a document in its three conventional copies — the consignor's, the consignee's and the carrier's — and the proof of delivery raised from the delivery record.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/accent.css">
+  <link rel="stylesheet" href="assets/print.css">
+  <script src="assets/theme-init.js"></script>
+</head>
+<body class="sheet">
+  <div class="wrap">
+    <div class="screen-only toolbar">
+      <a class="btn ghost" href="index.html">Back to the register</a>
+      <button class="btn primary" type="button" id="p-print">Print what is on screen</button>
+      <button class="themer" data-themer type="button">Theme</button>
+    </div>
+
+    <h1 class="screen-only pagehead">Consignment note copy set for printing</h1>
+    <p class="screen-only pagelede" id="p-lede">The consignor's copy, the consignee's copy and the carrier's copy, each carrying what that party needs and not what it does not &mdash; and, once the consignment has been delivered, the proof of delivery raised from the record. This page draws itself from the tool running on your own machine and needs JavaScript to do it. Nothing it does leaves the machine.</p>
+
+    <nav class="screen-only picker" id="p-picker" aria-label="The copies of this consignment note"></nav>
+
+    <div class="note screen-only" id="p-problem" hidden></div>
+    <div class="note screen-only" id="p-withheld" hidden></div>
+
+    <div id="p-sheets"></div>
+
+    <details class="assumptions screen-only" id="p-caveats-wrap" hidden>
+      <summary>What travels with the tax figure on these copies</summary>
+      <ul class="plain" id="p-caveats"></ul>
+    </details>
+  </div>
+
+  <script src="assets/print.js"></script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'; connect-src 'self'">
+  <title>Consignment note register for road transport offices · Open MSME</title>
+  <meta name="description" content="Issue numbered consignment notes for road carriage in three distinct copies, track each consignment from booked to delivered, and audit the number series for gaps and reuse on every read.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/accent.css">
+  <link rel="stylesheet" href="assets/layout.css">
+  <script src="assets/theme-init.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <span class="brand"><span class="dot"></span><b>Open MSME</b><span class="tag">consignment notes</span></span>
+      <span class="sp"></span>
+      <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+      <button class="themer" data-themer type="button">Theme</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Logistics &amp; warehousing &middot; India</div>
+        <h1>Consignment note register for road transport offices</h1>
+        <p class="lede">Issue a numbered consignment note &mdash; the bilty, the lorry receipt &mdash; in its three conventional copies, each carrying what that party needs and not what it does not. Track the consignment from booked to delivered and raise a proof of delivery from the record. The number series is audited on every read: a gap or a reused number is said out loud, because a register whose numbers have holes in it is not evidence of anything.</p>
+        <div class="who">
+          <span class="pill">Goods transport agencies and small booking offices</span>
+          <span class="pill reg">GTA consignment note &middot; reverse charge</span>
+          <span class="pill">Runs offline &middot; one binary</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="toolbar">
+        <button class="btn primary" type="button" id="new-note">New consignment note</button>
+        <button class="btn ghost" type="button" id="load-sample">Load the worked register</button>
+        <button class="btn ghost" type="button" id="clear-register">Clear the register</button>
+        <span class="saving" id="saving" aria-live="polite"></span>
+      </div>
+
+      <div class="note" id="no-script">This page is the interface to the tool running on your own machine, and it needs JavaScript to draw itself. Nothing it does leaves the machine.</div>
+
+      <section class="audit" id="audit" aria-live="polite" hidden>
+        <h2 class="audit-head" id="audit-headline">&mdash;</h2>
+        <ul class="breaks" id="audit-breaks"></ul>
+        <div class="table-scroll">
+          <table class="breakdown" id="audit-table">
+            <thead>
+              <tr>
+                <th>Series</th><th class="num">From</th><th class="num">To</th>
+                <th class="num">In run</th><th class="num">Accounted</th><th class="num">Missing</th>
+                <th class="num">Next</th><th>Verdict</th>
+              </tr>
+            </thead>
+            <tbody id="audit-body"></tbody>
+          </table>
+        </div>
+        <div class="btnrow">
+          <a class="btn ghost" href="/api/audit.csv">The serial audit as CSV</a>
+          <button class="btn ghost" type="button" id="toggle-gaps" hidden>Account for a missing number</button>
+        </div>
+
+        <form class="gapform" id="gap-form" hidden>
+          <p class="blurb">A number that was never used is accounted for as void, with a reason, and the series goes back to being unbroken. Nothing is renumbered and nothing is deleted.</p>
+          <div class="row3">
+            <div class="field">
+              <label for="gap-series">Series</label>
+              <select id="gap-series"></select>
+            </div>
+            <div class="field">
+              <label for="gap-seq">Number <span class="hint">the missing one</span></label>
+              <div class="inp"><input type="number" id="gap-seq" min="1" step="1"></div>
+            </div>
+            <div class="field">
+              <label for="gap-date">Date</label>
+              <input type="date" id="gap-date">
+            </div>
+          </div>
+          <div class="field">
+            <label for="gap-reason">Why was it never used?</label>
+            <textarea id="gap-reason" placeholder="Leaf spoiled at the counter — carbon misaligned, all three copies illegible. Struck through and retained in the book."></textarea>
+          </div>
+          <div class="btnrow">
+            <button class="btn primary" type="submit">Record it as void</button>
+            <button class="btn ghost" type="button" id="gap-cancel">Not now</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="tiles" id="tiles" hidden></section>
+
+      <section class="card" id="register-card">
+        <h2>The register <span class="count" id="register-count"></span></h2>
+        <p class="blurb" id="register-headline"></p>
+
+        <div class="row4">
+          <div class="field">
+            <label for="f-text">Search <span class="hint">number, party, route, goods, vehicle</span></label>
+            <div class="inp"><input type="text" id="f-text" placeholder="Malnad, KA 25, groundnut"></div>
+          </div>
+          <div class="field">
+            <label for="f-series">Series</label>
+            <select id="f-series"></select>
+          </div>
+          <div class="field">
+            <label for="f-status">Status</label>
+            <select id="f-status"></select>
+          </div>
+          <div class="field">
+            <label for="f-extra">Narrow it</label>
+            <select id="f-extra">
+              <option value="">Everything</option>
+              <option value="outstanding">Freight still owed</option>
+              <option value="overdue">Past the expected delivery date</option>
+              <option value="blockers">Not ready to issue</option>
+              <option value="unstated">No tax position stated</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="rows" id="register">
+            <thead>
+              <tr>
+                <th class="w-ref">No.</th>
+                <th class="w-small">Date</th>
+                <th>Consignor &rarr; consignee</th>
+                <th>Route</th>
+                <th class="num">Pkgs</th>
+                <th class="num">Weight</th>
+                <th class="w-kind">Freight</th>
+                <th class="num">Gross &#8377;</th>
+                <th class="num">Owed &#8377;</th>
+                <th class="w-kind">Status</th>
+                <th class="w-small"></th>
+              </tr>
+            </thead>
+            <tbody id="register-body"></tbody>
+          </table>
+        </div>
+        <p class="empty" id="register-empty" hidden>No consignment note matches. Clear the search, or raise a new note.</p>
+
+        <div class="btnrow">
+          <a class="btn ghost" href="/api/register.csv">The register as CSV</a>
+        </div>
+      </section>
+
+      <div class="cols calc" id="note-pane" hidden>
+        <div class="entry" id="form"></div>
+        <div class="side">
+          <section class="card sticky" id="verdict-card">
+            <h2>This note <span class="count" id="note-number"></span></h2>
+            <div class="result-primary" id="verdict-box">
+              <div class="k">Ready to issue?</div>
+              <div class="v" id="verdict">&mdash;</div>
+              <div class="sub" id="verdict-sub"></div>
+            </div>
+
+            <div class="tracker" id="tracker"></div>
+
+            <h2 class="spaced">Who owes the freight</h2>
+            <p class="liable" id="liable"></p>
+
+            <h2 class="spaced">Tax on the carriage</h2>
+            <p class="liable" id="tax"></p>
+            <details class="assumptions">
+              <summary>What travels with that figure</summary>
+              <ul class="plain" id="tax-caveats"></ul>
+            </details>
+
+            <h2 class="spaced">What to look at</h2>
+            <ul class="flags" id="findings"></ul>
+
+            <div class="btnrow">
+              <a class="btn primary" id="print-copies" href="print.html">Print the copy set</a>
+              <a class="btn ghost" id="dl-findings" href="/api/findings.csv">Findings as CSV</a>
+            </div>
+
+            <h2 class="spaced">Move it along</h2>
+            <div class="seg" id="advance"></div>
+            <p class="note" id="advance-note" hidden></p>
+
+            <details class="actions" id="deliver-wrap">
+              <summary>Record the delivery</summary>
+              <div class="row2">
+                <div class="field">
+                  <label for="d-date">Day the goods were taken</label>
+                  <input type="date" id="d-date">
+                </div>
+                <div class="field">
+                  <label for="d-packages">Packages received</label>
+                  <div class="inp"><input type="number" id="d-packages" min="0" step="1"></div>
+                </div>
+              </div>
+              <label class="check"><input type="checkbox" id="d-counted"> The packages were counted at the door</label>
+              <div class="row2">
+                <div class="field">
+                  <label for="d-name">Received by <span class="hint">the person, not the company</span></label>
+                  <div class="inp"><input type="text" id="d-name"></div>
+                </div>
+                <div class="field">
+                  <label for="d-role">In what capacity</label>
+                  <div class="inp"><input type="text" id="d-role" placeholder="godown keeper, for the consignee"></div>
+                </div>
+              </div>
+              <div class="row2">
+                <div class="field">
+                  <label for="d-condition">Condition</label>
+                  <select id="d-condition"></select>
+                </div>
+                <div class="field">
+                  <label for="d-collected">Freight collected <span class="hint">&#8377;</span></label>
+                  <div class="inp has-pre"><span class="pre">&#8377;</span><input type="text" id="d-collected" inputmode="decimal"></div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="d-id">What the receiver showed</label>
+                <div class="inp"><input type="text" id="d-id" placeholder="employee card"></div>
+              </div>
+              <div class="field">
+                <label for="d-remarks">Remarks <span class="hint">required if anything was short, damaged or refused</span></label>
+                <textarea id="d-remarks"></textarea>
+              </div>
+              <div class="btnrow">
+                <button class="btn primary" type="button" id="do-deliver">Record it and mark it delivered</button>
+              </div>
+            </details>
+
+            <details class="actions" id="cancel-wrap">
+              <summary>Cancel this note</summary>
+              <p class="blurb">A cancelled note keeps its number for good. That is what stops a hole appearing in the series.</p>
+              <div class="field">
+                <label for="c-date">Day the consignment was called off</label>
+                <input type="date" id="c-date">
+              </div>
+              <div class="field">
+                <label for="c-reason">Why</label>
+                <textarea id="c-reason" placeholder="Consignor withdrew the booking before loading; goods never handed over."></textarea>
+              </div>
+              <div class="field">
+                <label for="c-by">Recorded by</label>
+                <div class="inp"><input type="text" id="c-by" placeholder="booking counter"></div>
+              </div>
+              <div class="btnrow">
+                <button class="btn primary" type="button" id="do-cancel">Cancel it, keeping the number</button>
+              </div>
+            </details>
+
+            <details class="actions" id="renumber-wrap">
+              <summary>Renumber this note</summary>
+              <p class="blurb">The only reason to renumber is that two notes ended up on one number. The way out is forwards, to the end of the series &mdash; moving one backwards into a gap would put the register out of date order as well.</p>
+              <div class="field">
+                <label for="r-seq">Move it to number</label>
+                <div class="inp"><input type="number" id="r-seq" min="1" step="1"></div>
+              </div>
+              <div class="btnrow">
+                <button class="btn primary" type="button" id="do-renumber">Renumber it</button>
+              </div>
+            </details>
+
+            <p class="note" id="action-problem" hidden></p>
+            <p class="note" id="where">&nbsp;</p>
+          </section>
+        </div>
+      </div>
+
+      <section class="card" id="office-card">
+        <h2>The office, the series and the figures</h2>
+        <p class="blurb">Entered once. The office's own details go on every copy; the series is what the numbers are audited in; the figures are what the tax position is worked out on, and they are indicative and yours to change.</p>
+
+        <details class="actions">
+          <summary>The office's own details</summary>
+          <div class="row2">
+            <div class="field">
+              <label for="o-name">Name</label>
+              <div class="inp"><input type="text" id="o-name"></div>
+            </div>
+            <div class="field">
+              <label for="o-phone">Phone</label>
+              <div class="inp"><input type="text" id="o-phone"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="o-address">Address</label>
+            <textarea id="o-address"></textarea>
+          </div>
+          <div class="row4">
+            <div class="field">
+              <label for="o-city">City</label>
+              <div class="inp"><input type="text" id="o-city"></div>
+            </div>
+            <div class="field">
+              <label for="o-state">State</label>
+              <div class="inp"><input type="text" id="o-state"></div>
+            </div>
+            <div class="field">
+              <label for="o-pin">PIN</label>
+              <div class="inp"><input type="text" id="o-pin" inputmode="numeric"></div>
+            </div>
+            <div class="field">
+              <label for="o-gstin">GSTIN</label>
+              <div class="inp"><input type="text" id="o-gstin"></div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="o-pan">PAN</label>
+              <div class="inp"><input type="text" id="o-pan"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="o-terms">Conditions of carriage <span class="hint">printed at the foot of every copy; this tool ships none of its own</span></label>
+            <textarea id="o-terms"></textarea>
+          </div>
+          <p class="said" id="office-problem" hidden></p>
+        </details>
+
+        <details class="actions">
+          <summary>The number series</summary>
+          <p class="blurb">A transport office keeps one series per booking office, or one per financial year, or both. The first number of a series that already has notes in it cannot be moved: the audit measures the first gap from it.</p>
+          <ul class="kept" id="books"></ul>
+          <div class="row4">
+            <div class="field">
+              <label for="b-series">Series <span class="hint">BLR, HUB/26-27</span></label>
+              <div class="inp"><input type="text" id="b-series"></div>
+            </div>
+            <div class="field">
+              <label for="b-label">What to call it</label>
+              <div class="inp"><input type="text" id="b-label"></div>
+            </div>
+            <div class="field">
+              <label for="b-start">First number</label>
+              <div class="inp"><input type="number" id="b-start" min="1" step="1" value="1"></div>
+            </div>
+            <div class="field">
+              <label for="b-width">Digits on the note</label>
+              <div class="inp"><input type="number" id="b-width" min="1" max="8" step="1" value="4"></div>
+            </div>
+          </div>
+          <div class="btnrow">
+            <button class="btn primary" type="button" id="save-book">Save the series</button>
+          </div>
+          <p class="said" id="book-problem" hidden></p>
+        </details>
+
+        <details class="actions">
+          <summary>The figures the tax position is worked out on</summary>
+          <div class="note">The rates below are what this build ships with, and they are indicative. Whether the tax on a carriage falls on the recipient under reverse charge or on this agency under forward charge depends on the election this agency has made and on the status of the recipient of the service, and this tool will not decide either. Confirm the current position with the Central Board of Indirect Taxes and Customs or your own adviser before relying on any figure here.</div>
+          <div class="row3">
+            <div class="field">
+              <label for="t-rcm">Recipient, under reverse charge</label>
+              <div class="inp has-suf"><input type="text" id="t-rcm" inputmode="decimal"><span class="suf">%</span></div>
+            </div>
+            <div class="field">
+              <label for="t-fwd5">Agency, forward charge, no credit</label>
+              <div class="inp has-suf"><input type="text" id="t-fwd5" inputmode="decimal"><span class="suf">%</span></div>
+            </div>
+            <div class="field">
+              <label for="t-fwd12">Agency, forward charge, with credit</label>
+              <div class="inp has-suf"><input type="text" id="t-fwd12" inputmode="decimal"><span class="suf">%</span></div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="t-exempt">Small-consignment figure <span class="hint">&#8377; gross for a single carriage</span></label>
+              <div class="inp has-pre"><span class="pre">&#8377;</span><input type="text" id="t-exempt" inputmode="decimal"></div>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" id="t-apply"> Apply the small-consignment figure as an exemption. <b>Off by default.</b> The entries that figure came from have been amended; check whether any such exemption is in force and available to you before switching it on.</label>
+          <div class="btnrow">
+            <button class="btn primary" type="button" id="save-rates">Save the figures</button>
+            <button class="btn ghost" type="button" id="reset-rates">Back to the shipped figures</button>
+          </div>
+          <p class="said" id="rates-problem" hidden></p>
+        </details>
+
+        <details class="assumptions">
+          <summary>Every statutory figure this build carries, and where it came from</summary>
+          <div id="constants"></div>
+        </details>
+      </section>
+
+      <div class="note">This tool prepares and keeps documents. It is not advice, it files nothing, and it is connected to no portal, no vehicle register and no tax system. The electronic way bill is a separate document, generated and filed on the government portal; this tool records the number it was given and generates none.</div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Open MSME &middot; open-source tool for MSMEs in India &amp; the Philippines &middot; MIT</span>
+      <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a></span>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

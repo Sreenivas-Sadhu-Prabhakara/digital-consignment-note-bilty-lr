@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'">
+  <title>Consignment note register for road transport offices · Open MSME</title>
+  <meta name="description" content="A free single-binary tool for goods transport agencies and small booking offices in India: issue numbered consignment notes — the bilty, the lorry receipt — in three distinct copies, track each consignment to delivery, and have the number series audited for gaps and reuse on every read.">
+  <meta name="color-scheme" content="light dark">
+  <meta property="og:title" content="Consignment note register for road transport offices · Open MSME">
+  <meta property="og:description" content="A handwritten bilty book cannot be searched and its holes do not show. This issues the note in its three copies, tracks it to delivery, and says out loud when the numbers are broken.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/accent.css">
+  <script src="assets/theme-init.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">
+        <span class="dot"></span><b>Open MSME</b><span class="tag">consignment notes</span>
+      </a>
+      <span class="sp"></span>
+      <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+      <button class="themer" data-themer type="button">Theme</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Logistics &amp; warehousing &middot; India</div>
+        <h1>Consignment note register for road transport offices</h1>
+        <p class="lede">The bilty is the one document that must exist. It travels with the goods, it is the evidence of the contract of carriage, and issuing it is what makes a carrier a goods transport agency in the first place. Most small offices still write it in a triplicate book with a carbon sheet &mdash; which cannot be searched, is easily lost, and whose holes do not show. This tool issues the note in its three conventional copies, follows the consignment to delivery, and audits the number series on every single read.</p>
+        <div class="who">
+          <span class="pill">Goods transport agencies and small booking offices</span>
+          <span class="pill reg">GTA consignment note &middot; reverse charge &middot; Notification 12/2017-CT(R) para 2(ze), 13/2017-CT(R)</span>
+          <span class="pill">Free &middot; open source &middot; offline</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <section class="prose">
+        <h2>What it does</h2>
+        <p>You enter a consignment once &mdash; the parties, the goods, the freight term, the vehicle and the driver &mdash; and the tool issues the note, keeps it in a register you can search, and follows it to the door.</p>
+
+        <div class="featgrid">
+          <div class="feat">
+            <h3>A numbered consignment note</h3>
+            <p>Consignor, consignee, goods described as declared, packages, weight, freight, declared value, vehicle and driver, on a number allocated from a series the tool controls.</p>
+          </div>
+          <div class="feat">
+            <h3>Three distinct copies</h3>
+            <p>The consignor's, the consignee's and the carrier's. Not photocopies of each other: each carries what that party needs and not what it does not.</p>
+          </div>
+          <div class="feat">
+            <h3>Serial integrity, out loud</h3>
+            <p>Every read re-audits the numbers. A gap or a reused number puts a red banner at the top of the register, names the number and says what to do about it.</p>
+          </div>
+          <div class="feat">
+            <h3>Booked to delivered</h3>
+            <p>Four stages, with the moves that make no sense refused. A consignment marked as carried with no vehicle on it is stopped.</p>
+          </div>
+          <div class="feat">
+            <h3>Proof of delivery</h3>
+            <p>Raised from the delivery record: who signed, when, how many packages arrived, in what condition. It states what it evidences and &mdash; just as plainly &mdash; what it does not.</p>
+          </div>
+          <div class="feat">
+            <h3>Who owes the freight</h3>
+            <p>Paid, to pay, or billed to a third party. The register totals what the delivery clerk is due to collect at the door across every consignment still out.</p>
+          </div>
+          <div class="feat">
+            <h3>The tax position, stated not guessed</h3>
+            <p>Reverse charge, forward charge with or without credit, or nothing yet. A note whose position has not been settled prints that it has not been settled.</p>
+          </div>
+          <div class="feat">
+            <h3>A register you can search</h3>
+            <p>By number, party, route, goods, vehicle or way bill number; narrowed to what is overdue, what is owed, or what is not ready to issue. Out as CSV.</p>
+          </div>
+        </div>
+
+        <h2>Serial integrity is the product</h2>
+        <p>A bilty book is printed with its numbers already on the leaves. Every leaf is accounted for &mdash; used, spoiled and struck through, or still in the book &mdash; and that is the whole discipline. It is what makes the register evidence: if the numbers run unbroken, a consignment that was carried cannot be missing from the register, and a note that turns up later cannot have been written after the fact and slotted in.</p>
+        <p>Typing the numbers into a spreadsheet throws the discipline away silently, which is worse than losing the book, because the holes do not show. So this tool audits on every read and is deliberately blunt about it:</p>
+        <ul>
+          <li><strong>A gap.</strong> One or more numbers in the run that nothing accounts for. Reported as runs rather than one line per number, so a book that lost a whole pad reads as <code>BLR/0210 to BLR/0259</code> and not as fifty lines.</li>
+          <li><strong>A reuse.</strong> One number carried by more than one note &mdash; the worst thing that can happen to a register. The date on each of them comes back with it, so the one to keep can be told from the one to renumber.</li>
+          <li><strong>Numbers forward, dates backward.</strong> Not a break: the numbers are all there and each is used once. It is reported anyway, because it is what a note written after the event looks like.</li>
+        </ul>
+        <p>And then the rules that keep it unbroken, which are enforced rather than suggested:</p>
+        <ul>
+          <li><strong>Nothing is deleted.</strong> Asking the tool to delete a note gets a refusal that says why and what to do instead. A consignment that was called off is <em>cancelled</em> and keeps its number.</li>
+          <li><strong>A spoiled leaf is recorded, not ignored.</strong> A number that was never used is accounted for as <em>void</em>, with a reason, and the series goes back to being unbroken. That is how a gap is closed.</li>
+          <li><strong>Allocation never fills a gap.</strong> The next note always goes one past the highest number accounted for. Slotting a note into a hole would put it out of date order as well as leaving the hole unexplained &mdash; two wrong things instead of one.</li>
+          <li><strong>Renumbering only goes forwards.</strong> The one legitimate reason to renumber is that two notes ended up on one number, and the way out is to move one to the end of the series.</li>
+          <li><strong>A book's first number cannot be moved once it has notes in it.</strong> The audit measures the first gap from it, so moving it would make a hole appear or disappear with nothing else having changed.</li>
+        </ul>
+        <p>An office carrying on from a paper book starts its series wherever the paper one stopped, and the audit measures from there rather than pretending the first hundred numbers are missing.</p>
+
+        <h2>Why the three copies are not the same document</h2>
+        <p>A paper bilty book is printed in triplicate on three colours precisely because the three parties need different things out of the same transaction. The tool derives which particulars go on which copy rather than printing one layout three times:</p>
+        <ul>
+          <li><strong>The consignor's copy</strong> is the consignor's evidence that the goods were handed over and accepted for carriage, and the consignor's record of what the carriage cost. It carries the freight in full, with the rate it was worked out from.</li>
+          <li><strong>The consignee's copy</strong> travels to the consignee and is what the goods are claimed against at the destination. On a <em>to pay</em> consignment it carries one figure in a box: what has to be paid before the goods are released. On a <strong>prepaid</strong> consignment it carries no freight at all &mdash; nothing is collected there, and the rate the consignor negotiated is not the consignee's business. The copy says on its face why the figure is absent, so nobody is left guessing.</li>
+          <li><strong>The carrier's copy</strong> stays in the office. It carries everything: the working behind the freight, the driver and the licence number, and a blank delivery block with the conditions to tick, to be signed at the destination.</li>
+          <li><strong>The proof of delivery</strong> is a fourth sheet, not one of the three, and it is not issued until the consignment has actually been delivered. Before that the tool withholds it and says why.</li>
+        </ul>
+
+        <h2>What a proof of delivery is worth</h2>
+        <p>A signature is worth what is written beside it. A proof of delivery with a name and no date, or a short delivery with no remark, is the document a claim is later lost on. So the delivery record is checked against the note it discharges: a delivery dated before the booking is refused; a short delivery recorded as &ldquo;good order&rdquo; is refused; a condition of short, damaged or refused with no remark is refused.</p>
+        <p>The document that comes out states, in two lists on the paper itself, what it evidences and what it does not. It always says that the carrier did not open the packages. It says when the packages were never counted, and therefore that it is not evidence of a complete delivery. It says when no value was declared. A clean proof of delivery and a qualified one say so in as many words at the top.</p>
+
+        <h2>Who it's for</h2>
+        <p>The transport office that issues the bilty: a goods transport agency, a booking office, a small fleet owner who carries for others. It suits whoever sits at the counter and writes the note &mdash; and whoever, a month later, has to answer for where number 0147 went.</p>
+        <p>It assumes a consignment with a consignor, a consignee, goods you can count and a vehicle to put them on. It needs no accounting system, no spreadsheet licence and no internet connection.</p>
+
+        <h2>The rule it implements</h2>
+        <p>A consignment note is not a form anybody publishes. What it is, under the goods and services tax, is a term of art with consequences, and those are what this tool applies.</p>
+        <ul>
+          <li><strong>The consignment note is what makes a carrier a goods transport agency.</strong> A <em>goods transport agency</em> is defined as a person who provides service in relation to transport of goods by road <em>and issues a consignment note, by whatever name called</em> &mdash; clause (ze) of paragraph 2 of <strong>Notification No. 12/2017-Central Tax (Rate) dated 28 June 2017</strong>. Issuing this document is the thing the definition turns on, which is why it is where the tax question starts.</li>
+          <li><strong>Tax on a goods transport agency's service is commonly payable by the recipient under reverse charge</strong>, where the recipient falls within the categories specified by <strong>Notification No. 13/2017-Central Tax (Rate) dated 28 June 2017, as amended</strong>. The agency may instead elect to pay the tax itself under forward charge, at a rate that depends on which election it made and whether it takes input tax credit, under <strong>Notification No. 11/2017-Central Tax (Rate) dated 28 June 2017, as amended</strong>.</li>
+          <li><strong>Which of those applies to a given consignment is not something this tool decides, and it does not pretend to.</strong> It depends on two facts the tool cannot see: the agency's own election, and the status of the recipient of the service. You choose the position; the tool works out the figure that position implies, on the gross amount charged for the transportation of those goods, from a rate held as a named constant that you can change on screen. Every figure it produces carries its caveats with it. <strong>A note whose position has not been settled prints that it has not been settled</strong>, rather than a figure somebody might rely on.</li>
+          <li><strong>The particulars the tool prints</strong> &mdash; a serial number, the consignor and consignee, the vehicle's registration number, the details of the goods, the place of origin and the place of delivery, and who is liable to pay the tax &mdash; follow the long-standing trade convention that descends from the particulars prescribed by <strong>rule 4B of the Service Tax Rules, 1994</strong>. Goods and services tax law uses the term <em>consignment note</em> without re-prescribing that list in the same form, so treat these as the trade's usual contents rather than as a statutory form, and confirm what your own filings and your customers require.</li>
+          <li><strong>The copy set</strong> &mdash; one for the consignor, one for the consignee, one retained by the carrier &mdash; is the practice of the triplicate bilty book, and sits alongside the obligations of a common carrier under the <strong>Carriage by Road Act, 2007</strong> and the rules under it. This tool prints the set; it does not reproduce the Act, and a carrier should read what the Act requires of it.</li>
+        </ul>
+
+        <div class="note"><strong>The electronic way bill is a separate document and this tool does not generate one.</strong> It is raised and filed on the government portal. The tool has a field to record the number you were given, so that the note and the way bill can be found together, and that field is the whole of its involvement. Whether a way bill is needed for a given consignment, and what has to be on it, is a matter for the portal and the rules in force &mdash; not for this program, which is connected to nothing.</div>
+
+        <h2>Install &amp; run</h2>
+        <p>One binary, standard library only, no external dependencies at all.</p>
+        <pre><code>git clone https://github.com/sreenivas-sadhu-prabhakara/digital-consignment-note-bilty-lr.git
+cd digital-consignment-note-bilty-lr
+go build -o consignment-notes .
+./consignment-notes
+
+# or, without building first
+go run .</code></pre>
+        <p>Then open <code>http://127.0.0.1:8080</code>. Two flags, if you want them:</p>
+        <pre><code>./consignment-notes -addr 127.0.0.1:9000 -data /path/to/register.json</code></pre>
+        <p>Load the worked register to see the whole thing before you type anything of your own: five notes numbered BLR/0001 to BLR/0005 running unbroken through a delivered prepaid consignment, a to-pay load still on the road, one billed to a third party, a cancelled note that keeps its number, and a spoiled leaf recorded as void.</p>
+
+        <h2>What it stores</h2>
+        <p>One JSON file beside the binary, written atomically and readable in any text editor &mdash; it is your register, not a database. It holds the office's own details, the number series, the figures the tax position is worked out on, and every note. The file is written private to your user, and the whole file is rewritten on every change so that a crash leaves either the old register or the new one, never half of either. Half a register is a register with holes in its numbering, which matters more here than in most tools.</p>
+        <p>Nothing leaves the machine. The tool binds to <code>127.0.0.1</code>, makes no outbound network call of any kind, and has no telemetry, no analytics and no fonts or scripts from anywhere else. It is connected to no portal, no vehicle register and no tax system. It files nothing and sends nothing. You print the copies and hand them over yourself.</p>
+
+        <h2>Features</h2>
+        <div class="featgrid">
+          <div class="feat">
+            <h3>Figures that cannot drift</h3>
+            <p>Nothing is held as a floating-point rupee. Money is in whole paise, weight in whole grams, rates in hundredths of a percent. Each figure is rounded once, where it becomes a figure on a copy.</p>
+          </div>
+          <div class="feat">
+            <h3>Freight on the basis you quote</h3>
+            <p>Per quintal, per tonne, per kilogram, per package, or a lump sum for the trip &mdash; or a figure you were quoted outright, in which case the copy says the rate did not produce it.</p>
+          </div>
+          <div class="feat">
+            <h3>Minimum charged weight</h3>
+            <p>Where the carrier books a vehicle at a minimum, freight is charged on the greater of that and the load, and the copy shows both figures and says which was used.</p>
+          </div>
+          <div class="feat">
+            <h3>Amounts in words</h3>
+            <p>On the Indian scale &mdash; thousand, lakh, crore &mdash; with the paise named only where there are any, and no second "and" to make an amount read as two.</p>
+          </div>
+          <div class="feat">
+            <h3>Calendar-correct dates</h3>
+            <p>Three days' transit from 27 February lands on 2 March, or on 1 March in a leap year. A date the calendar does not have is refused rather than shifted.</p>
+          </div>
+          <div class="feat">
+            <h3>Registration numbers checked</h3>
+            <p>A GSTIN against its own check character &mdash; which matters here, because whether the recipient is registered is the fact the reverse-charge question turns on. A vehicle number against its shape, in the state form or the Bharat series.</p>
+          </div>
+          <div class="feat">
+            <h3>Blockers against checks</h3>
+            <p>What would make the note <em>wrong</em> stops it being issued; what would merely make it incomplete is listed to look at. Every finding names the field it is about and says what to do.</p>
+          </div>
+          <div class="feat">
+            <h3>Printable, and exportable</h3>
+            <p>Each copy laid out as a document, one per page on paper, in light and dark. The register, the serial audit and one note's findings also come out as CSV.</p>
+          </div>
+        </div>
+
+        <h2>Assumptions</h2>
+        <details class="assumptions">
+          <summary>The figures this build ships with, and what it assumes</summary>
+          <p><strong>Every rate below is indicative and user-overridable.</strong> Each lives as a named constant in one place in the code, is copied into your register file, and can be changed on screen. A change to the law is therefore a change to a number, not a change to the program. <strong>Confirm the current position with the Central Board of Indirect Taxes and Customs or your own adviser before relying on any figure this tool prints.</strong> What follows is what this build assumes, not a statement of what is in force today.</p>
+
+          <p><strong>Reverse charge: 5%.</strong> <code>RateRecipientReverseChargeDefault</code> is 5.00%, the rate commonly applied where the recipient of a goods transport agency's service accounts for the tax under reverse charge. Reference: Notification No. 13/2017-Central Tax (Rate) dated 28 June 2017, as amended, read with Notification No. 11/2017-Central Tax (Rate) dated 28 June 2017, as amended. Confirm both the rate and the specified categories of recipient.</p>
+
+          <p><strong>Forward charge without input tax credit: 5%.</strong> <code>RateGTAForwardNoITCDefault</code> is 5.00%. Reference: Notification No. 11/2017-Central Tax (Rate) dated 28 June 2017, as amended. The election to pay under forward charge has conditions attached, including how and when it is made; check that it covers the period the note falls in.</p>
+
+          <p><strong>Forward charge with input tax credit: 12%.</strong> <code>RateGTAForwardWithITCDefault</code> is 12.00%. Same reference and the same caution.</p>
+
+          <p><strong>The small-consignment figures are carried but NOT applied.</strong> <code>ExemptSingleCarriageGrossDefault</code> is &#8377;1,500 and <code>ExemptSingleConsigneeGrossDefault</code> is &#8377;750 &mdash; figures that appeared in the entry against serial number 21 of Notification No. 12/2017-Central Tax (Rate) dated 28 June 2017, <strong>which has since been amended</strong>. <code>ApplyConsignmentExemptionDefault</code> is <strong>off</strong>. The tool compares the gross against the figure and tells you the note would fall under it, and then does not apply it, because it will not assert that an exemption is available to you. You can switch it on; if you do, the tool says in as many words that it has not checked whether the exemption is in force or available to you. The per-consignee figure is never applied at all: that test needs the whole carriage, and this register keeps one note at a time.</p>
+
+          <p><strong>No position is assumed.</strong> A new note states no tax position. Whether the tax on a carriage falls on the recipient under reverse charge or on the agency under forward charge depends on the agency's own election and the status of the recipient, and the tool decides neither. A note left unsettled prints <em>&ldquo;TAX POSITION ON THIS CARRIAGE NOT STATED ON THIS NOTE&rdquo;</em> on all three copies.</p>
+
+          <p><strong>The base.</strong> Where a rate is applied, it is applied to the gross amount charged for the transportation of the goods &mdash; the freight plus loading, unloading, door delivery, detention and any other charge on the note. That figure is derived in one place so the screen, the copies and the register cannot each arrive at their own.</p>
+
+          <p><strong>Units, not statutes.</strong> A quintal is 100 kg and a tonne is 1,000 kg. These are units of measure.</p>
+
+          <p><strong>Rounding.</strong> Half away from zero &mdash; 2.5 to 3 and &minus;2.5 to &minus;3 &mdash; which is how a freight clerk rounds and what a consignee checking the balance expects to find. The freight is rounded once, where it becomes a figure on the note.</p>
+
+          <p><strong>Registration numbers.</strong> A GSTIN is 15 characters and the tool computes its check character and compares. A vehicle registration is checked against its shape only, in the state form (KA 01 AB 1234) or the Bharat series (21 BH 1234 AA). This tool is connected to no register of either kind, so a number that passes may still not be anybody's.</p>
+
+          <p><strong>Conditions of carriage.</strong> This build ships none. The foot of every copy says the goods are carried subject to the conditions of carriage, and you enter your own wording once; the tool will not invent somebody's contract terms for them.</p>
+
+          <p><strong>What it does not do.</strong> It generates no e-way bill and is connected to no portal. It files no return and computes no liability beyond the indicative figure described above. It does not price a trip, check a vehicle's documents, or tell you whether a consignment may lawfully move.</p>
+        </details>
+
+        <div class="note">This tool prepares and keeps documents. It is not advice, it is not a filing, and it is connected to no portal, no vehicle register and no tax system. It cannot tell you whether a figure is <em>right</em> &mdash; a weight entered wrong once will be on all three copies, consistently. Check every figure against what was actually loaded, and the tax position with your own adviser, before the note leaves your hands. Where a statutory figure is involved, confirm the current position with the authority: notifications are amended, and this page states what this build assumes rather than what is in force today.</div>
+
+        <h2>Licence</h2>
+        <p>MIT licensed, free forever, and open to read line by line &mdash; including the rules it applies, which live in one small package whose tests cover a clean run of numbers, a single hole, a run of holes, a book that starts above its first note, a number on two notes at once, numbers that climb while dates fall, an amount in words at zero and at the lakh boundary, three days' transit across the end of February in a common year and a leap year, a prepaid consignee's copy that must not show the rate, a short delivery recorded as good order, and a tax position that nobody has stated.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Open MSME &middot; open-source tool for MSMEs in India &amp; the Philippines &middot; MIT</span>
+      <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a></span>
+    </div>
+  </footer>
+
+  <script src="assets/ui.js"></script>
+</body>
+</html>
